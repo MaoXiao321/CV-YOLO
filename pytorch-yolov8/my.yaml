@@ -1,0 +1,8 @@
+train:  /project/train/src_repo/yolov8/dataset/train.txt
+val: /project/train/src_repo/yolov8/dataset/val.txt  
+
+# Classes
+names:
+  0: head
+  1: person
+  2: hat
