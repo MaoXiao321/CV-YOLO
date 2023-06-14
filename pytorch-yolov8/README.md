@@ -3,8 +3,9 @@ git clone https://github.com/ultralytics/ultralytics.git
 
 ## 环境创建
 ```
-Python>=3.7
-PyTorch>=1.7
+# Python>=3.7 PyTorch>=1.7
+conda create -n yolo python=3.7
+conda install pytorch==1.10.0 torchvision -c pytorch
 pip install ultralytics -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install -r requirements.txt
 ```
@@ -60,17 +61,19 @@ results = model('bus.jpg') # 包含前处理、推理以及后处理
 从ultralytics/models/v8下复制yolov8-seg.yaml到当前目录<br>
 ### train
 ```
-yolo task=segment mode=train data=my-seg.yaml model=yolov8s-seg.yaml pretrained=yolov8s-seg.pt epochs=2 save_period=2 imgsz=640
-```
-参数介绍：https://docs.ultralytics.com/usage/cfg/#train
-### predict
-```
-yolo task=segment mode=predict model=yolov8s-seg.pt source='bus.jpg'
-```
-### export
-```
+# train，参数介绍：https://docs.ultralytics.com/usage/cfg/#train
+yolo task=segment mode=train data=my-seg.yaml model=yolov8s-seg.yaml pretrained=yolov8s-seg.pt epochs=2 save_period=2 batch=8 
+
+# val
+yolo task=segment mode=val data=my-seg.yaml model=yolov8s-seg.yaml model=runs/segment/train/weights/best.pt
+
+# predict
+yolo task=segment mode=predict model=yolov8s-seg.pt source='bus.jpg' conf=0.25
+
+# export
 yolo export model=path/to/best.pt format=onnx
 ```
+
 ## pose
 从ultralytics/datasets下复制yolov8-pose.yaml到当前目录，命名为my-pose.yaml，修改：
 ```

@@ -15,7 +15,7 @@ class yolo_datasets():
         ls = [self.image_path,self.label_path]
         for path in ls: 
             if not os.path.exists(path): os.mkdir(path) 
-        ls = ['train.txt','val.txt']   
+        ls = ['train.txt','val.txt','label_count.txt']   
         for path in ls:  
             if os.path.exists(path): os.remove(path)
                 
@@ -24,8 +24,28 @@ class yolo_datasets():
         for img in image_files:
             shutil.copy(img, self.image_path)
         print("move images done!\n")        
+    
+    def check_label(self):
+        """label count"""
+        f = open('label_count.txt', 'a', encoding='utf-8')
+        json_files = glob.glob(str(Path(self.data_path) / '*.json'), recursive=True)
+        for json_path in json_files:
+            dic = dict(zip(self.CLASSES,[0]*len(self.CLASSES)))
+            json_labels = json.load(open(json_path, "r"))
+            for annotation in json_labels['shapes']:
+                try:
+                    classname = annotation['label'] # 类别名
+                    dic[classname] += 1               
+                except:
+                    continue
+            line = '\t'.join([str(i) for i in dic.values()])
+            line = f'{json_path}\t{line}\n'
+            f.write(line)
+        f.close()
+        print("check labels done!\n")
+            
 
-    def xmlToTxt(self):
+    def jsonTotxt(self):
         json_files = glob.glob(str(Path(self.data_path) / '*.json'), recursive=True)
         # 解析分割：<class-index> <x1> <y1> <x2> <y2> ... <xn> <yn>,归一化
         for json_path in json_files:
@@ -67,13 +87,14 @@ class yolo_datasets():
         print("split done!\n")
     
     def forward(self):
+        # self.check_label()
         self.make_images()
-        self.xmlToTxt()
+        self.jsonTotxt()
         self.split_data()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data_path', default='home/data/1', type=str, help='iamges path')
+    parser.add_argument('--data_path', default='home/data/2', type=str, help='iamges path')
     args = parser.parse_args()
     
     dataset = yolo_datasets(data_path = args.data_path)
