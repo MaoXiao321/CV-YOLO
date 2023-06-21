@@ -5,29 +5,27 @@ import shutil
 import json
 import os
 
-class yolo_datasets():
+class dataset_seg():
     def __init__(self, data_path = '/home/data/1'):
         self.data_path = data_path
-        self.root_path = os.path.dirname(data_path)
+        self.root_path = os.path.dirname(self.data_path)
         self.CLASSES = ['return_air_inlet','wall_opening']
         self.image_path = os.path.join(self.root_path,'images')
         self.label_path = os.path.join(self.root_path,'labels')
-        ls = [self.image_path,self.label_path]
-        for path in ls: 
-            if not os.path.exists(path): os.mkdir(path) 
-        ls = ['train.txt','val.txt','label_count.txt']   
-        for path in ls:  
-            if os.path.exists(path): os.remove(path)
                 
     def make_images(self):
+        if not os.path.exists(self.image_path): os.mkdir(self.image_path) 
         image_files = glob.glob(str(Path(self.data_path) / '*.jpg'), recursive=True)
         for img in image_files:
             shutil.copy(img, self.image_path)
         print("move images done!\n")        
     
     def check_label(self):
-        """label count"""
-        f = open('label_count.txt', 'a', encoding='utf-8')
+        """label count: labelme多边形标注获得json文件"""
+        filename = 'label_count.txt'
+        if os.path.exists(filename): os.remove(filename)
+        
+        f = open(filename, 'a', encoding='utf-8')
         json_files = glob.glob(str(Path(self.data_path) / '*.json'), recursive=True)
         for json_path in json_files:
             dic = dict(zip(self.CLASSES,[0]*len(self.CLASSES)))
@@ -42,10 +40,11 @@ class yolo_datasets():
             line = f'{json_path}\t{line}\n'
             f.write(line)
         f.close()
-        print("check labels done!\n")
-            
+        print("check labels done!\n")         
 
     def jsonTotxt(self):
+        """labelme多边形标注json转txt"""
+        if not os.path.exists(self.label_path): os.mkdir(self.label_path) 
         json_files = glob.glob(str(Path(self.data_path) / '*.json'), recursive=True)
         # 解析分割：<class-index> <x1> <y1> <x2> <y2> ... <xn> <yn>,归一化
         for json_path in json_files:
@@ -74,6 +73,9 @@ class yolo_datasets():
         print("make labels done!\n")
     
     def split_data(self): 
+        for path in ['train.txt','val.txt']:  
+            if os.path.exists(path): os.remove(path)
+        
         seed = [2,5]
         ftrain = open('train.txt', 'a', encoding='utf-8')
         fval = open('val.txt', 'a', encoding='utf-8')
@@ -97,5 +99,5 @@ if __name__ == "__main__":
     parser.add_argument('--data_path', default='home/data/2', type=str, help='iamges path')
     args = parser.parse_args()
     
-    dataset = yolo_datasets(data_path = args.data_path)
+    dataset = dataset_seg(data_path = args.data_path)
     dataset.forward()

@@ -1,2 +1,3 @@
 # CV-YOLO
-YOLOv5/YOLOv8
+YOLOv5使用
+YOLOv8使用
