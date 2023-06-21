@@ -10,7 +10,7 @@ pip install -r requirements.txt
 conda activate yolo
 ```
 ## detect
-### 创建数据集
+### 创建数据集(百度云盘：dataset_box_smple.zip)
 原始数据存储在/home/data/831/下面，包含.jpg和.xml。运行以下脚本创建images、labels文件夹，并划分数据集产生train.txt和val.txt
 ```
 python dataset_box.py /home/data/831/
@@ -45,7 +45,7 @@ yolo predict model=yolov8s.pt source='bus.jpg'
 results = model('bus.jpg') # 包含前处理、推理以及后处理
 ```
 ## seg
-用法参考：https://docs.ultralytics.com/tasks/segment/
+用法参考：https://docs.ultralytics.com/tasks/segment/。数据集准备（百度云盘：dataset_seg_sample.zip和coco数据集instances_500.zip）
 以coco数据集为例(instances,500张)，划分train和val<br>
 从ultralytics/datasets下复制coco128-seg.yaml到当前目录，命名为my-seg.yaml，改train,val和类别<br>
 从ultralytics/models/v8下复制yolov8-seg.yaml到当前目录<br>
@@ -60,6 +60,7 @@ yolo task=segment mode=predict model=yolov8s-seg.pt source='bus.jpg' conf=0.25
 yolo export model=path/to/best.pt format=onnx
 ```
 ## pose
+数据集准备（dataset_keypoints_sample.zip和coco数据集person_keypoints_2d_500.zip）
 从ultralytics/datasets下复制yolov8-pose.yaml到当前目录，命名为my-pose.yaml，修改：
 ```
 train:  /project/train/src_repo/yolov8/dataset/train.txt
