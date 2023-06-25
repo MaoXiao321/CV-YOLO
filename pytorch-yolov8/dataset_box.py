@@ -10,7 +10,7 @@ class dataset_box():
     def __init__(self, data_path = '/home/data/1'):
         self.data_path = data_path
         self.root_path = os.path.dirname(data_path)
-        self.CLASSES = self.get_class('names.txt')
+        self.CLASSES = self.get_class('names.txt') # 可以直接写list
         self.image_path = os.path.join(self.root_path,'images')
         self.label_path = os.path.join(self.root_path,'labels')
     

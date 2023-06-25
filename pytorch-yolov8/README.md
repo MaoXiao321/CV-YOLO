@@ -3,11 +3,12 @@ git clone https://github.com/ultralytics/ultralytics.git
 ## 环境创建
 ```
 # Python>=3.7 PyTorch>=1.7
-conda create -n yolo python=3.7
+conda create -n yolo python=3.8
 conda install pytorch==1.10.0 torchvision -c pytorch  # 从pytorch官网找安装命令
 pip install ultralytics -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install -r requirements.txt
-conda activate yolo
+
+pip install ultralytics --upgrade # 升级
 ```
 ## detect
 ### 创建数据集(百度云盘：dataset_box_smple.zip)
