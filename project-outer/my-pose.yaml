@@ -1,0 +1,12 @@
+# train:  /project/train/src_repo/yolov8/dataset/train.txt
+# val: /project/train/src_repo/yolov8/dataset/val.txt 
+train:  dataset/train.txt
+val: dataset/val.txt 
+
+# Keypoints
+kpt_shape: [8, 2]  # number of keypoints, number of dims (2 for x,y or 3 for x,y,visible)
+# flip_idx: [0, 2, 1, 4, 3, 6, 5, 8, 7, 10, 9, 12, 11, 14, 13, 16, 15]
+
+# Classes
+names:
+  0: outer

@@ -1,0 +1,11 @@
+train: train.txt
+val: val.txt
+
+# Classes
+names:
+  0: return_air_inlet
+  1: wall_opening
+
+
+# # Download script/URL (optional)
+# download: https://ultralytics.com/assets/coco128-seg.zip
